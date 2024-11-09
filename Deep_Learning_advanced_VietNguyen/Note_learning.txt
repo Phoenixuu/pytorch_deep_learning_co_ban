@@ -1,0 +1,53 @@
+VOCDataset
+VOCDetection
+model - fasterrcnn_resnet50
+
+kiến thức faster cnn:
+https://pytorch.org/vision/main/models/generated/torchvision.models.detection.fasterrcnn_resnet50_fpn.html#torchvision.models.detection.fasterrcnn_resnet50_fpn
+
+
+đầu vào: ảnh tensors, list của các bức ảnh, số kênh màu, chiều cao
+Mỗi ảnh có thể có nhiều kích thước khác nhau
+Targets: list của dictionary
+boxes:
+labels:
+
+
+qúa trình train:
+model = fasterrcnn_restnet50_fpn(weights=FasterRCNN_ResNet50_FPN_Weights.DEFAULT)
+
+model.eval()
+output = model([images], [target])
+
+//tập test thì ko có target
+output = model([images])
+
+pprint(output)
+
+
+Faster RCNN losses:
+4 losses"
+1. RPN classification: archor box is object/not an object
+2. RPT regression: predict transform from anchor box to proposal box
+3. Object classification: classify proposals as background/object class
+4. Object regression: predict transform from proposal box to object box
+
+
+
+train_dataloader = DataLoader(
+	dataset = train_dataset,
+	batch_size = batch_size,
+	num_workers = 4,
+	shuffle = True,
+	drop_last = True,
+)
+
+train_dataset = VOCDataset(..)
+train_dataloader = DataLoader(
+	dataset = train_dataset,
+	batch_size = batch_size,
+	num_workers = 4,
+	shuffle = False,
+	drop_last = False,
+)
+model = fasterrcnn_resnet50_fpn(weights = FasterRCNN_RestNet50_FPN_Weights_
