@@ -101,7 +101,6 @@ class VOCDataset(VOCDetection):
 			metric = MeanAveragePrecision(iou_type = "bbox")
 			for images, targets in progress_bar:
 				images = [image.to(device) for image in images]
-						
 				
 				predictions = model(images)
 				
