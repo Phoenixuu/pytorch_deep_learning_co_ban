@@ -12,42 +12,18 @@ Targets: list của dictionary
 boxes:
 labels:
 
+không cần creteria nữa vì có hàm loss tự tính bên trong rồi 
 
-qúa trình train:
-model = fasterrcnn_restnet50_fpn(weights=FasterRCNN_ResNet50_FPN_Weights.DEFAULT)
+batch_size = 2 có ảnh hưởng tiêu cực tới layer nào trong fasterrcnn?
+back norm
 
-model.eval()
-output = model([images], [target])
+không có drop out vì faster dựa trên restnet, back norm làm vai trò chống overfitting của dropout rồi. Backnorm hiệu quả khi kích thước lớn
+Restnet50 nếu mô hình bé thì ko phát huy được hết khả năng của nó.
 
-//tập test thì ko có target
-output = model([images])
+Đóng băng backbone
+trainable_backbone_layers: mặc định là 3.
+nếu muốn tốn ít GPU thì để thấp còn muốn performance thì để cao
 
-pprint(output)
-
-
-Faster RCNN losses:
-4 losses"
-1. RPN classification: archor box is object/not an object
-2. RPT regression: predict transform from anchor box to proposal box
-3. Object classification: classify proposals as background/object class
-4. Object regression: predict transform from proposal box to object box
-
-
-
-train_dataloader = DataLoader(
-	dataset = train_dataset,
-	batch_size = batch_size,
-	num_workers = 4,
-	shuffle = True,
-	drop_last = True,
-)
-
-train_dataset = VOCDataset(..)
-train_dataloader = DataLoader(
-	dataset = train_dataset,
-	batch_size = batch_size,
-	num_workers = 4,
-	shuffle = False,
-	drop_last = False,
-)
-model = fasterrcnn_resnet50_fpn(weights = FasterRCNN_RestNet50_FPN_Weights_
+train ko lỗi nhưng test lại lỗi là do metrics
+ko giải phóng, bị tràn memory. Bị tích lũy GPU.
+Để giải quyết thì chuyển sang CPU
